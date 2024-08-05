@@ -1,39 +1,45 @@
 import logging
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
-from bs4 import BeautifulSoup
 
 # configura o log para verificar sucesso ou falha
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def extract_data_from_soup(soup, grau):
+    # lida com valores nao encontrados
+    def find_text(soup, selector, default=""):
+        element = soup.find(id=selector)
+        return element.get_text(strip=True) if element else default
+    
     if grau == "primeiro_grau":
         return {
-            "classe": soup.find(id="classeProcesso").get_text(strip=True),
-            "area": soup.find(id="areaProcesso").get_text(strip=True),
-            "assunto": soup.find(id="assuntoProcesso").get_text(strip=True),
-            "data_distribuicao": soup.find(id="dataHoraDistribuicaoProcesso").get_text(strip=True),
-            "juiz": soup.find(id="juizProcesso").get_text(strip=True),
-            "valor_acao": soup.find(id="valorAcaoProcesso").get_text(strip=True)
+            "classe": find_text(soup, "classeProcesso", "N/A"),
+            "area": find_text(soup, "areaProcesso", "N/A"),
+            "assunto": find_text(soup, "assuntoProcesso", "N/A"),
+            "data_distribuicao": find_text(soup, "dataHoraDistribuicaoProcesso", "N/A"),
+            "juiz": find_text(soup, "juizProcesso", "N/A"),
+            "valor_acao": find_text(soup, "valorAcaoProcesso", "N/A")
         }
     elif grau == "segundo_grau":
         return {
-            "classe": soup.find("span", title=True).get_text(strip=True),
-            "area": soup.find(id="areaProcesso").get_text(strip=True),
-            "assunto": soup.find(id="assuntoProcesso").get_text(strip=True),
-            "relator": soup.find(id="relatorProcesso").get_text(strip=True),
-            "valor_acao": soup.find(id="valorAcaoProcesso").get_text(strip=True)
+            "classe": find_text(soup, "classeProcesso", "N/A"),
+            "area": find_text(soup, "areaProcesso", "N/A"),
+            "assunto": find_text(soup, "assuntoProcesso", "N/A"),
+            "relator": find_text(soup, "relatorProcesso", "N/A"),
+            "valor_acao": find_text(soup, "valorAcaoProcesso", "N/A")
         }
     return {}
 
-def tjal_fetch_data(nro_processo):
-    url_grau_1 = "https://www2.tjal.jus.br/cpopg/open.do"
-    url_grau_2 = "https://www2.tjal.jus.br/cposg5/open.do"
+def tjce_fetch_data(nro_processo):
+    print(nro_processo)
+    url_grau_1 = "https://esaj.tjce.jus.br/cpopg/open.do"
+    url_grau_2 = "https://esaj.tjce.jus.br/cposg5/open.do"
     
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
@@ -41,7 +47,7 @@ def tjal_fetch_data(nro_processo):
     options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(options=options)
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(driver, 5)
 
     # dicionarios separados para armazenar resultados
     grau_1 = {}
@@ -63,9 +69,10 @@ def tjal_fetch_data(nro_processo):
             # extrai o HTML da pagina e cria o BeautifulSoup
             html = driver.page_source
             soup = BeautifulSoup(html, 'html.parser')
-
+            print("entrou no try")
             # coleta os dados do processo
             grau_1 = extract_data_from_soup(soup, "primeiro_grau")
+            print("coletou")
             logger.info("Dados coletados para o primeiro grau.")
         except NoSuchElementException as e:
             logger.error("NoSuchElementException ocorreu para o primeiro grau: %s", e)
@@ -97,12 +104,15 @@ def tjal_fetch_data(nro_processo):
             # coleta os dados do processo
             grau_2 = extract_data_from_soup(soup, "segundo_grau")
             logger.info("Dados coletados para o segundo grau.")
+        except TimeoutException as e:
+            logger.error("TimeoutException ocorreu ao carregar o modal para o segundo grau: %s", e)
+            grau_2 = {"error": f"TimeoutException ocorreu: {str(e)}"}
         except NoSuchElementException as e:
             logger.error("NoSuchElementException ocorreu para o segundo grau: %s", e)
             grau_2 = {"error": f"NoSuchElementException ocorreu: {str(e)}"}
         
-    except TimeoutException:
-        logger.error("TimeoutException ocorreu.")
+    except TimeoutException as e:
+        logger.error("TimeoutException ocorreu: %s", e)
     except WebDriverException as e:
         logger.error("WebDriverException ocorreu: %s", e)
     finally:
