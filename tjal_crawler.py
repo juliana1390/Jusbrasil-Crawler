@@ -46,7 +46,7 @@ def tjal_fetch_data(nro_processo):
     options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(options=options)
-    wait = WebDriverWait(driver, 5)
+    wait = WebDriverWait(driver, 10)
 
     # dicionarios separados para armazenar resultados
     grau_1 = {}
@@ -89,9 +89,11 @@ def tjal_fetch_data(nro_processo):
 
         try:
             logger.info("Esperando o modal ser carregado.")
-            modal_element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".modal-content")))
+            modal_element = wait.until(EC.presence_of_element_located((By.ID, "modalIncidentes")))
             logger.info("Modal carregado.")
-            select_button = modal_element.find_element(By.XPATH, '//button[text()="Selecionar"]')
+            radio_button = modal_element.find_element(By.ID, "processoSelecionado")
+            radio_button.click()
+            select_button = modal_element.find_element(By.ID, "botaoEnviarIncidente")
             select_button.click()
             logger.info("Botão 'Selecionar' clicado.")
 

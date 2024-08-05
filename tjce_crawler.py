@@ -37,7 +37,6 @@ def extract_data_from_soup(soup, grau):
     return {}
 
 def tjce_fetch_data(nro_processo):
-    print(nro_processo)
     url_grau_1 = "https://esaj.tjce.jus.br/cpopg/open.do"
     url_grau_2 = "https://esaj.tjce.jus.br/cposg5/open.do"
     
@@ -47,7 +46,7 @@ def tjce_fetch_data(nro_processo):
     options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(options=options)
-    wait = WebDriverWait(driver, 5)
+    wait = WebDriverWait(driver, 10)
 
     # dicionarios separados para armazenar resultados
     grau_1 = {}
@@ -69,10 +68,8 @@ def tjce_fetch_data(nro_processo):
             # extrai o HTML da pagina e cria o BeautifulSoup
             html = driver.page_source
             soup = BeautifulSoup(html, 'html.parser')
-            print("entrou no try")
             # coleta os dados do processo
             grau_1 = extract_data_from_soup(soup, "primeiro_grau")
-            print("coletou")
             logger.info("Dados coletados para o primeiro grau.")
         except NoSuchElementException as e:
             logger.error("NoSuchElementException ocorreu para o primeiro grau: %s", e)
@@ -91,9 +88,11 @@ def tjce_fetch_data(nro_processo):
 
         try:
             logger.info("Esperando o modal ser carregado.")
-            modal_element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".modal-content")))
+            modal_element = wait.until(EC.presence_of_element_located((By.ID, "modalIncidentes")))
             logger.info("Modal carregado.")
-            select_button = modal_element.find_element(By.XPATH, '//button[text()="Selecionar"]')
+            radio_button = modal_element.find_element(By.ID, "processoSelecionado")
+            radio_button.click()
+            select_button = modal_element.find_element(By.ID, "botaoEnviarIncidente")
             select_button.click()
             logger.info("Botão 'Selecionar' clicado.")
 
