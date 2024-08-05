@@ -5,88 +5,112 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
-import json
+from bs4 import BeautifulSoup
 
-# log para verificar successo ou falha
+# configura o log para verificar sucesso ou falha
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-"""
-Configura e retorna uma instância do navegador Chrome
-rodando sem GUI - modo headless
-"""
-def driver_setup():
+def extract_data_from_soup(soup, grau):
+    if grau == "primeiro_grau":
+        return {
+            "classe": soup.find(id="classeProcesso").get_text(strip=True),
+            "area": soup.find(id="areaProcesso").get_text(strip=True),
+            "assunto": soup.find(id="assuntoProcesso").get_text(strip=True),
+            "data_distribuicao": soup.find(id="dataHoraDistribuicaoProcesso").get_text(strip=True),
+            "juiz": soup.find(id="juizProcesso").get_text(strip=True),
+            "valor_acao": soup.find(id="valorAcaoProcesso").get_text(strip=True)
+        }
+    elif grau == "segundo_grau":
+        return {
+            "classe": soup.find("span", title=True).get_text(strip=True),
+            "area": soup.find(id="areaProcesso").get_text(strip=True),
+            "assunto": soup.find(id="assuntoProcesso").get_text(strip=True),
+            "relator": soup.find(id="relatorProcesso").get_text(strip=True),
+            "valor_acao": soup.find(id="valorAcaoProcesso").get_text(strip=True)
+        }
+    return {}
+
+def tjal_fetch_data(nro_processo):
+    url_grau_1 = "https://www2.tjal.jus.br/cpopg/open.do"
+    url_grau_2 = "https://www2.tjal.jus.br/cposg5/open.do"
+    
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
     driver = webdriver.Chrome(options=options)
-    return driver
+    wait = WebDriverWait(driver, 10)
 
-"""
-Busca dados no site do TJAL (Tribunal de Justiça de Alagoas)
-com base no número do processo e grau fornecidos.
-"""
-def tjal_fetch_data(nro_processo, grau):
-    if grau == 1:
-        url = f"https://www2.tjal.jus.br/cpopg/open.do"
-    else:
-        url = f"https://www2.tjal.jus.br/cposg5/open.do"
-
-    driver = driver_setup()
-    driver.get(url)
-
-    data = {} # inicializa um dicionário para armazenar os dados
+    # dicionarios separados para armazenar resultados
+    grau_1 = {}
+    grau_2 = {}
 
     try:
-        logger.info(f"Acessando URL: {url}")
+        # procura no primeiro grau
+        logger.info("Acessando URL: %s", url_grau_1)
+        driver.get(url_grau_1)
+        logger.info("Página carregada para o primeiro grau.")
+        
+        # insere o numero do processo no campo de busca
+        search_box = wait.until(EC.presence_of_element_located((By.ID, "numeroDigitoAnoUnificado")))
+        search_box.send_keys(nro_processo)
+        search_box.send_keys(Keys.RETURN)
+        logger.info("A busca pelo processo %s foi iniciada no primeiro grau.", nro_processo)
+        
+        try:
+            # extrai o HTML da pagina e cria o BeautifulSoup
+            html = driver.page_source
+            soup = BeautifulSoup(html, 'html.parser')
 
-        # espera a caixa de busca ser encontrada
-        search_box = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, "numeroDigitoAnoUnificado"))
-        )
-        logger.info("Página carregada.")
+            # coleta os dados do processo
+            grau_1 = extract_data_from_soup(soup, "primeiro_grau")
+            logger.info("Dados coletados para o primeiro grau.")
+        except NoSuchElementException as e:
+            logger.error("NoSuchElementException ocorreu para o primeiro grau: %s", e)
+            grau_1 = {"error": f"NoSuchElementException ocorreu: {str(e)}"}
+        
+        # procura no segundo grau
+        logger.info("Acessando URL: %s", url_grau_2)
+        driver.get(url_grau_2)
+        logger.info("Página carregada para o segundo grau.")
+        
+        # insere o numero do processo no campo de busca
+        search_box = wait.until(EC.presence_of_element_located((By.ID, "numeroDigitoAnoUnificado")))
+        search_box.send_keys(nro_processo)
+        search_box.send_keys(Keys.RETURN)
+        logger.info("A busca pelo processo %s foi iniciada no segundo grau.", nro_processo)
 
-        search_box.send_keys(nro_processo) # envia nro do processo
-        search_box.send_keys(Keys.RETURN) # simula ENTER
-        logger.info(f"A busca pelo processo {nro_processo} foi iniciada.")
+        try:
+            logger.info("Esperando o modal ser carregado.")
+            modal_element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".modal-content")))
+            logger.info("Modal carregado.")
+            select_button = modal_element.find_element(By.XPATH, '//button[text()="Selecionar"]')
+            select_button.click()
+            logger.info("Botão 'Selecionar' clicado.")
 
-        # coletar dados do processo
-        data["classe"] = driver.find_element(By.ID, "classeProcesso").text
-        logger.info("Classe do processo encontrada.")
+            # extrai o HTML da pagina e cria o BeautifulSoup
+            html = driver.page_source
+            soup = BeautifulSoup(html, 'html.parser')
 
-        data["area"] = driver.find_element(By.ID, "areaProcesso").text
-        logger.info("Área do processo encontrada.")
-
-        data["assunto"] = driver.find_element(By.ID, "assuntoProcesso").text
-        logger.info("Assunto encontrado.")
-
-        data["data_distribuicao"] = driver.find_element(By.ID, "dataHoraDistribuicaoProcesso").text
-        logger.info("Data/Hora de distribuição do processo encontrada.")
-
-        data["juiz"] = driver.find_element(By.ID, "juizProcesso").text
-        logger.info("Juíz encontrado.")
-
-        data["valor_acao"] = driver.find_element(By.ID, "valorAcaoProcesso").text
-        logger.info("Valor da ação encontrado.")
-
-    except TimeoutException as e:
-        logger.error(f"TimeoutException ocorreu: {e}", exc_info=True) # exc_info: capturar o rastreamento da pilha
-        logger.debug(driver.page_source)  # depuracao da pagina
-        data = {"erro": "TimeoutException: " + str(e)}
-
-    except NoSuchElementException as e:
-        logger.error(f"NoSuchElementException ocorreu: {e}", exc_info=True)
-        data = {"erro": "NoSuchElementException: " + str(e)}
-
+            # coleta os dados do processo
+            grau_2 = extract_data_from_soup(soup, "segundo_grau")
+            logger.info("Dados coletados para o segundo grau.")
+        except NoSuchElementException as e:
+            logger.error("NoSuchElementException ocorreu para o segundo grau: %s", e)
+            grau_2 = {"error": f"NoSuchElementException ocorreu: {str(e)}"}
+        
+    except TimeoutException:
+        logger.error("TimeoutException ocorreu.")
     except WebDriverException as e:
-        logger.error(f"WebDriverException ocorreu: {e}", exc_info=True)
-        data = {"erro": "WebDriverException: " + str(e)}
-
-    except Exception as e:
-        logger.error(f"Ocorreu um erro: {e}", exc_info=True)
-        data = {"erro": str(e)}
-
+        logger.error("WebDriverException ocorreu: %s", e)
     finally:
         driver.quit()
         logger.info("Driver encerrado.")
 
-    return data
+    # retorna os resultados separados por grau
+    return {
+        "primeiro_grau": grau_1,
+        "segundo_grau": grau_2
+    }

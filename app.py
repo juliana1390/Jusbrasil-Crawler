@@ -12,7 +12,6 @@ def get_data():
     data = request.json
     nro_processo = data.get("nro_processo")
     tribunal = data.get("tribunal")
-    grau = data.get("grau")
 
     if tribunal != 'TJAL':
         return Response(
@@ -20,10 +19,10 @@ def get_data():
             mimetype='application/json; charset=utf-8'
         ), 400
     
-    result = tjal_fetch_data(nro_processo, grau)
+    result = tjal_fetch_data(nro_processo)
     
-    # conversao
-    json_response = json.dumps(result, ensure_ascii=False)
+    # conversao json
+    json_response = json.dumps(result, ensure_ascii=False, indent=4)
 
     return Response(
         json_response,
