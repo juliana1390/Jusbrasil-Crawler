@@ -64,9 +64,9 @@ def extract_movimentacoes(soup):
             rows = tabela_movimentacoes.find_all('tr')
             for row in rows:
                 cols = row.find_all('td')
-                if len(cols) >= 2:
+                if len(cols) >= 3:
                     data = cols[0].get_text(strip=True)
-                    descricao = [x.strip() for x in cols[1].get_text(strip=True).split("\n") if x.strip() != ""]
+                    descricao = " ".join([x.strip() for x in cols[2].get_text(strip=True).split("\n") if x.strip() != ""])
                     movimentacoes.append({
                         'data': data,
                         'descricao': descricao
