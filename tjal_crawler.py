@@ -36,6 +36,48 @@ def extract_data_from_soup(soup, grau):
         }
     return {}
 
+def extract_partes(soup):
+    partes = {}
+    try:
+        # acessa a tabela das partes
+        tabela_partes = soup.find(id="tableTodasPartes")
+        if tabela_partes:
+            for parte in tabela_partes.find_all('tr'):
+                cols = parte.find_all('td')
+                if len(cols) >= 2:
+                    nome = cols[0].get_text(strip=True)
+                    advogado = cols[1].get_text(strip=True)
+                    partes[nome] = f"{advogado}"
+        else:
+            logger.warning("Tabela de partes não encontrada.")
+    except Exception as e:
+        logger.error("Erro ao extrair partes: %s", e)
+        partes = None
+    return partes
+
+def extract_movimentacoes(soup):
+    movimentacoes = []
+    try:
+        # acessa a tabela de movimentacoes
+        tabela_movimentacoes = soup.find(id="tabelaTodasMovimentacoes")
+        if tabela_movimentacoes:
+            rows = tabela_movimentacoes.find_all('tr')
+            for row in rows:
+                cols = row.find_all('td')
+                if len(cols) >= 2:
+                    data = cols[0].get_text(strip=True)
+                    descricao = " ".join([x.strip() for x in cols[1].get_text(strip=True).split("\n") if x.strip() != ""])
+                    movimentacoes.append({
+                        'data': data,
+                        'descricao': descricao
+                    })
+        else:
+            logger.warning("Tabela de movimentações não encontrada.")
+    except Exception as e:
+        logger.error("Erro ao extrair movimentações: %s", e)
+        movimentacoes = None
+    return movimentacoes
+
 def tjal_fetch_data(nro_processo):
     url_grau_1 = "https://www2.tjal.jus.br/cpopg/open.do"
     url_grau_2 = "https://www2.tjal.jus.br/cposg5/open.do"
@@ -71,6 +113,9 @@ def tjal_fetch_data(nro_processo):
 
             # coleta os dados do processo
             grau_1 = extract_data_from_soup(soup, "primeiro_grau")
+            grau_1['partes'] = extract_partes(soup)
+            print(grau_1['partes'])
+            grau_1['movimentacoes'] = extract_movimentacoes(soup)
             logger.info("Dados coletados para o primeiro grau.")
         except NoSuchElementException as e:
             logger.error("NoSuchElementException ocorreu para o primeiro grau: %s", e)
@@ -103,6 +148,8 @@ def tjal_fetch_data(nro_processo):
 
             # coleta os dados do processo
             grau_2 = extract_data_from_soup(soup, "segundo_grau")
+            grau_2['partes'] = extract_partes(soup)
+            grau_2['movimentacoes'] = extract_movimentacoes(soup)
             logger.info("Dados coletados para o segundo grau.")
         except TimeoutException as e:
             logger.error("TimeoutException ocorreu ao carregar o modal para o segundo grau: %s", e)
