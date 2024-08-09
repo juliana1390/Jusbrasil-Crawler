@@ -1,9 +1,13 @@
 from flask import Flask, request, Response
-from tjal_crawler import tjal_fetch_data
-from tjce_crawler import tjce_fetch_data
+from crawler import fetch_data
 import json
 
 app = Flask(__name__)
+
+url_tjal_1 = "https://www2.tjal.jus.br/cpopg/open.do"
+url_tjal_2 = "https://www2.tjal.jus.br/cposg5/open.do"
+url_tjce_1 = "https://esaj.tjce.jus.br/cpopg/open.do"
+url_tjce_2 = "https://esaj.tjce.jus.br/cposg5/open.do"
 
 """
 exemplo:
@@ -51,6 +55,20 @@ def parse_nro_processo(nro_processo):
         "Tribunal": tribunal
     }
 
+def generate_result(result_first_instance, result_second_instance):
+    response_data = {
+        "Primeiro Grau": result_first_instance,
+        "Segundo Grau": result_second_instance
+    }
+
+    # conversao para JSON
+    json_response = json.dumps(response_data, ensure_ascii=False, indent=4)
+
+    return Response(
+        json_response,
+        mimetype='application/json; charset=utf-8'
+    )
+
 @app.route('/api/process', methods=['POST'])
 def get_data():
     data = request.json
@@ -65,24 +83,20 @@ def get_data():
         ), 400
 
     tribunal = parsed_data["Tribunal"]
-    
-    # chama a funcao de busca apropriada
+    nro_processo_modificado = parsed_data["NumeroDigitoAnoUnificado"] + parsed_data["ForoNumeroUnificado"]
+
+    # chama o crawler
     if tribunal == 'TJAL':
-        nro_processo_modificado = parsed_data["NumeroDigitoAnoUnificado"] + parsed_data["ForoNumeroUnificado"]
-        fetch_data_function = tjal_fetch_data
+        result_tjal1 = fetch_data(nro_processo_modificado, url_tjal_1)
+        result_tjal2 = fetch_data(nro_processo_modificado, url_tjal_2)
+
+        return generate_result(result_tjal1, result_tjal2)
+
     elif tribunal == 'TJCE':
-        nro_processo_modificado = parsed_data["NumeroDigitoAnoUnificado"] + parsed_data["ForoNumeroUnificado"]
-        fetch_data_function = tjce_fetch_data
+        result_tjce1 = fetch_data(nro_processo_modificado, url_tjce_1)
+        result_tjce2 = fetch_data(nro_processo_modificado, url_tjce_2)
 
-    result = fetch_data_function(nro_processo_modificado)
-    
-    # conversao JSON
-    json_response = json.dumps(result, ensure_ascii=False, indent=4)
-
-    return Response(
-        json_response,
-        mimetype='application/json; charset=utf-8'
-    )
+        return generate_result(result_tjce1, result_tjce2)
 
 if __name__ == "__main__":
     app.run(debug=True)
