@@ -122,22 +122,22 @@ def fetch_data(nro_processo, url):
 
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
-
+        print("carregou soup")
         # verifica a existencia de mensagem de erro, caso o nro do processo esteja errado
         try:
-            erro_element = wait.until(EC.presence_of_element_located((By.ID, "spwTabelaMensagem")))
+            erro_element = driver.find_element(By.ID, "spwTabelaMensagem")
             erro_msg = erro_element.text.strip()
             if erro_msg:
-                # logger.error("Processo %s não encontrado, verifique se o número está correto.", nro_processo)
                 logger.error("Processo %s não encontrado no %s, ou número está incorreto.", nro_processo, grau)
-                data = {""}
+                data = {}
                 return
-        except TimeoutException:
+        except NoSuchElementException:
             logger.info("Nenhum erro encontrado. Continuando a extração dos dados.")
 
+        print("antes modal")
         # interage com o modal, se necessario
         soup = interact_with_modal(driver, wait)
-
+        print("apos modal")
         # coleta os dados do processo
         data = extract_data_from_soup(soup, grau)
         data['partes'] = extract_partes(soup)
@@ -146,7 +146,7 @@ def fetch_data(nro_processo, url):
         print(data)
     except (TimeoutException, WebDriverException) as e:
         logger.error("Erro ocorreu durante a busca: %s", e)
-        data = {""}
+        data = {}
 
     return {
         "Dados Processuais": data
