@@ -142,7 +142,7 @@ def process_ul(grau, driver, soup):
 
                     data = extract_data_from_soup(soup_new, grau)
                     data['Partes'] = extract_partes(soup_new)
-                    data['Movimentacoes'] = extract_movimentacoes(soup_new)
+                    data['Movimentações'] = extract_movimentacoes(soup_new)
 
                     results.append(data)
             else:
@@ -157,7 +157,7 @@ def fetch_data(nro_processo, url):
 
     # configura opcoes do chrome
     options = Options()
-    # options.add_argument("--headless")
+    options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     
@@ -202,8 +202,8 @@ def fetch_data(nro_processo, url):
             # coleta os dados do processo se <ul> não for encontrado
             logger.info("Nenhum item <ul> encontrado. Coletando dados diretamente.")
             data = extract_data_from_soup(soup, grau)
-            data['partes'] = extract_partes(soup)
-            data['movimentacoes'] = extract_movimentacoes(soup)
+            data['Partes'] = extract_partes(soup)
+            data['Movimentações'] = extract_movimentacoes(soup)
             results = [data]
             logger.info("Dados coletados.")
 

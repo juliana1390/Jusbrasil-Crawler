@@ -22,37 +22,36 @@ def fetch_process_data(item, url):
             }
     except Exception as e:
         print(f"Exceção ao requisitar dados para {item['nro_processo']}: {str(e)}")
-        return {
-            "Número do processo": item['nro_processo'],
-            "Erro": "Exceção",
-            "Mensagem": str(e)
-        }
+        return
+        # return {
+        #     "Número do processo": item['nro_processo'],
+        #     "Erro": "Exceção",
+        #     "Mensagem": str(e)
+        # }
     
 def process_data():
     url = "http://127.0.0.1:8000/api/process"
 
     with open('input_file.json', 'r') as file:
         data = json.load(file)
-        
-        responses = []
 
     with ThreadPoolExecutor(max_workers=5) as executor:
         future_to_item = {executor.submit(fetch_process_data, item, url): item for item in data}
         
         for future in as_completed(future_to_item):
-            result = future.result() # se houver uma excecao, ela sera propagada
+            result = future.result()  # se houver uma exceção, ela será propagada
             if result:  # verificação para evitar adicionar None
-                responses.append(result)
-
-    # arquivo JSON com data e hora atual no nome, para salvar os resultados
-    now = datetime.now()
-    timestamp = now.strftime("%Y-%m-%d_%H:%M:%S")
-    output_filename = f"response_{timestamp}.json"
-    
-    with open(output_filename, 'w', encoding='utf-8') as outfile:
-        json.dump(responses, outfile, ensure_ascii=False, indent=4)
-    
-    print(f"Respostas salvas em {output_filename}")
+                # cria um timestamp para o nome do arquivo
+                now = datetime.now()
+                timestamp = now.strftime("%Y-%m-%d_%H:%M:%S")
+                process_number = result["Número do processo"]
+                output_filename = f"processo_{process_number}_({timestamp}).json"
+                
+                # Salva a resposta em um arquivo JSON separado
+                with open(output_filename, 'w', encoding='utf-8') as outfile:
+                    json.dump(result, outfile, ensure_ascii=False, indent=4)
+                
+                print(f"Resultado salvo em: {output_filename}")
 
 if __name__ == "__main__":
     process_data()
