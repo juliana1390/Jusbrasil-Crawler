@@ -1,0 +1,23 @@
+# Ignora arquivos Python compilados
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Ignora diretórios de ambientes virtuais
+venv/
+env/
+
+# Ignora arquivos de sistema e de configuração do editor
+.DS_Store
+*.swp
+*.swo
+
+# Ignora arquivos de log
+*.log
+
+# Ignora arquivos de cache
+.cache/
+
+# Ignora o diretório do Docker
+docker/

@@ -14,23 +14,15 @@ def fetch_process_data(item, url):
                 "Consulta": response_data
             }
         else:
-            print(f"Ocorreu um erro durante a pesquisa:\nProcesso: {item['nro_processo']}\nErro: {response.status_code}")
-            return {
-                "Número do processo": item['nro_processo'],
-                "Erro": response.status_code,
-                "Mensagem": response.text
-            }
+            response_data = response.json()
+            print(f"\nOcorreu um erro durante a pesquisa:\nProcesso: {item['nro_processo']}\nErro: {response.status_code}\nMensagem: {response_data.text}")
+            return
     except Exception as e:
         print(f"Exceção ao requisitar dados para {item['nro_processo']}: {str(e)}")
         return
-        # return {
-        #     "Número do processo": item['nro_processo'],
-        #     "Erro": "Exceção",
-        #     "Mensagem": str(e)
-        # }
     
 def process_data():
-    url = "http://127.0.0.1:8000/api/process"
+    url = "http://flask_app:5000/api/process" # docker
 
     with open('input_file.json', 'r') as file:
         data = json.load(file)

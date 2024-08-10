@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
 
@@ -90,14 +91,14 @@ def interact_with_modal(driver, wait):
         radio_button.click()
         select_button = modal_element.find_element(By.ID, "botaoEnviarIncidente")
         select_button.click()
-        wait.until(EC.staleness_of(modal_element))  # Aguarda o modal ser fechado
+        wait.until(EC.staleness_of(modal_element))  # aguarda o modal ser fechado
         
-        # Recarregar o HTML e o BeautifulSoup
+        # recarrega o HTML e o BeautifulSoup
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
-        logger.info("Interagido com o modal com sucesso.")
+        logger.info("Página com modal.")
     except (TimeoutException, NoSuchElementException):
-        logger.info("Modal não encontrado. Continuando sem interagir com o modal.")
+        logger.info("Página sem modal.")
         soup = BeautifulSoup(driver.page_source, 'html.parser')
     return soup
 
@@ -108,7 +109,7 @@ def process_ul(grau, driver, soup):
     url = driver.current_url
     parsed_url = urlparse(url)
 
-    # Construindo a URL principal (esquema + netloc)
+    # construindo a URL principal (esquema + netloc)
     url_principal = f"{parsed_url.scheme}://{parsed_url.netloc}"
  
     if not ul_elements:
@@ -124,7 +125,7 @@ def process_ul(grau, driver, soup):
             if link_element:
                 link = link_element.get('href')
                 if link:
-                    # Verifique se o link é um caminho relativo
+                    # verifica se o link e um caminho relativo
                     if link.startswith('/'):
                         full_url = f"{url_principal}{link}"
                     else:
@@ -132,9 +133,6 @@ def process_ul(grau, driver, soup):
 
                     logger.info("Abrindo link: %s", full_url)
                     driver.get(full_url)
-                    
-                    # Aguardar o carregamento da nova página (opcional)
-                    # WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'seletor_do_elemento_na_nova_pagina')))
 
                     # coleta os dados da nova pagina
                     html = driver.page_source
@@ -162,8 +160,8 @@ def fetch_data(nro_processo, url):
     options.add_argument("--disable-dev-shm-usage")
     
     # configura o servico do chromedriver
-    # service = Service(ChromeDriverManager().install())
-    service = Service('/usr/local/bin/chromedriver-linux64/chromedriver')
+    service = Service(ChromeDriverManager().install())
+    # service = Service('/usr/local/bin/chromedriver-linux64/chromedriver')
 
     # inicializa o webdriver com as opcoes e servico configurados
     driver = webdriver.Chrome(service=service, options=options)
@@ -200,7 +198,7 @@ def fetch_data(nro_processo, url):
         
         if not results:
             # coleta os dados do processo se <ul> não for encontrado
-            logger.info("Nenhum item <ul> encontrado. Coletando dados diretamente.")
+            logger.info("Nenhuma lista de instâncias do processo.")
             data = extract_data_from_soup(soup, grau)
             data['Partes'] = extract_partes(soup)
             data['Movimentações'] = extract_movimentacoes(soup)
