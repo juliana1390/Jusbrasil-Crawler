@@ -19,5 +19,7 @@ services:
     command: python3 process_data.py
     volumes:
       - .:/app
+    environment:
+      - TZ=America/Sao_Paulo
     depends_on:
       - web

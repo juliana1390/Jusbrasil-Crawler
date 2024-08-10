@@ -185,7 +185,7 @@ def fetch_data(nro_processo, url):
             erro_element = driver.find_element(By.ID, "spwTabelaMensagem")
             erro_msg = erro_element.text.strip()
             if erro_msg:
-                logger.error("Processo %s não encontrado no %s, ou número está incorreto.", nro_processo, grau)
+                logger.warning("Processo %s não encontrado no %s, ou número está incorreto.", nro_processo, grau)
                 return {"Dados Processuais": {}}
         except NoSuchElementException:
             logger.info("Nenhum erro encontrado. Continuando a extração dos dados.")
