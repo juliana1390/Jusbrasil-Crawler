@@ -11,77 +11,82 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
 
-# configura o log para verificar sucesso ou falha
-logging.basicConfig(level=logging.INFO)
+# passar informacoes atraves do logging
+
+# configura o logger
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    handlers=[
+                        logging.FileHandler("crawler_data.log"),  # log em arquivo
+                        logging.StreamHandler()  # log no console
+                    ])
+
 logger = logging.getLogger(__name__)
 
+def find_text(soup, selector, default=""):
+    element = soup.find(id=selector)
+    return element.get_text(strip=True) if element else default
+
 def extract_data_from_soup(soup, grau):
-    # lida com valores nao encontrados
-    def find_text(soup, selector, default=""):
-        element = soup.find(id=selector)
-        return element.get_text(strip=True) if element else default
+    common_fields = {
+        "Classe": find_text(soup, "classeProcesso", "N/A"),
+        "Área": find_text(soup, "areaProcesso", "N/A"),
+        "Assunto": find_text(soup, "assuntoProcesso", "N/A"),
+        "Valor da Ação": find_text(soup, "valorAcaoProcesso", "N/A"),
+    }
     
-    if grau == "primeiro_grau":
-        return {
-            "Classe": find_text(soup, "classeProcesso", "N/A"),
-            "Área": find_text(soup, "areaProcesso", "N/A"),
-            "Assunto": find_text(soup, "assuntoProcesso", "N/A"),
+    specific_fields = {
+        "primeiro_grau": {
             "Data da Distribuição": find_text(soup, "dataHoraDistribuicaoProcesso", "N/A"),
             "Juiz": find_text(soup, "juizProcesso", "N/A"),
-            "Valor da Ação": find_text(soup, "valorAcaoProcesso", "N/A")
-        }
-    elif grau == "segundo_grau":
-        return {
-            "Classe": find_text(soup, "classeProcesso", "N/A"),
-            "Área": find_text(soup, "areaProcesso", "N/A"),
-            "Assunto": find_text(soup, "assuntoProcesso", "N/A"),
+        },
+        "segundo_grau": {
             "Órgão Julgador": find_text(soup, "orgaoJulgadorProcesso", "N/A"),
             "Relator": find_text(soup, "relatorProcesso", "N/A"),
-            "Valor da Ação": find_text(soup, "valorAcaoProcesso", "N/A")
         }
-    return {}
+    }
+    
+    return {**common_fields, **specific_fields.get(grau, {})}
 
 def extract_partes(soup):
     partes = {}
     try:
-        # acessa a tabela das partes
-        tabela_partes = soup.find(id="tableTodasPartes") or soup.find(id="tablePartesPrincipais")
-
-        if tabela_partes:
-            for parte in tabela_partes.find_all('tr'):
+        table_partes = soup.find(id="tableTodasPartes") or soup.find(id="tablePartesPrincipais")
+        if table_partes:
+            for parte in table_partes.find_all('tr'):
                 cols = parte.find_all('td')
                 if len(cols) >= 2:
                     nome = cols[0].get_text(strip=True)
                     advogado = cols[1].get_text(strip=True)
-                    partes[nome] = f"{advogado}"
+                    
+                    # verifica se ha "Advogado:" ou "Advogada:" e adiciona um espaco
+                    if "Advogado:" in advogado:
+                        advogado = advogado.replace("Advogado:", " | Advogado:")
+                    elif "Advogada:" in advogado:
+                        advogado = advogado.replace("Advogada:", " | Advogada:")
+                    
+                    partes[nome] = advogado
         else:
             logger.warning("Tabela de partes não encontrada.")
     except Exception as e:
         logger.error("Erro ao extrair partes: %s", e)
-        partes = {}
     return partes
 
 def extract_movimentacoes(soup):
     movimentacoes = []
     try:
-        # Acessa a tabela de movimentações
-        tabela_movimentacoes = soup.find(id="tabelaTodasMovimentacoes")
-        if tabela_movimentacoes:
-            rows = tabela_movimentacoes.find_all('tr')
-            for row in rows:
+        table_movimentacoes = soup.find(id="tabelaTodasMovimentacoes")
+        if table_movimentacoes:
+            for row in table_movimentacoes.find_all('tr'):
                 cols = row.find_all('td')
                 if len(cols) >= 3:
                     data = cols[0].get_text(strip=True)
-                    descricao = " ".join([x.strip() for x in cols[2].get_text(strip=True).split("\n") if x.strip() != ""])
-                    movimentacoes.append({
-                        'data': data,
-                        'descricao': descricao
-                    })
+                    descricao = " ".join([x.strip() for x in cols[2].get_text(strip=True).split("\n") if x.strip()])
+                    movimentacoes.append({'data': data, 'descricao': descricao})
         else:
             logger.warning("Tabela de movimentações não encontrada.")
     except Exception as e:
         logger.error("Erro ao extrair movimentações: %s", e)
-        movimentacoes = []
     return movimentacoes
 
 def interact_with_modal(driver, wait):
@@ -92,24 +97,16 @@ def interact_with_modal(driver, wait):
         select_button = modal_element.find_element(By.ID, "botaoEnviarIncidente")
         select_button.click()
         wait.until(EC.staleness_of(modal_element))  # aguarda o modal ser fechado
-        
-        # recarrega o HTML e o BeautifulSoup
-        html = driver.page_source
-        soup = BeautifulSoup(html, 'html.parser')
-        logger.info("Página com modal.")
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        logger.info("Interação com modal bem sucedida.")
     except (TimeoutException, NoSuchElementException):
-        logger.info("Página sem modal.")
+        logger.info("Modal não encontrado. Continuando...")
         soup = BeautifulSoup(driver.page_source, 'html.parser')
     return soup
 
 def process_ul(grau, driver, soup):
     ul_elements = soup.find_all('ul', class_='unj-list-row')
-    
-    # pega url atual e faz parse para cortar o endereco da home
-    url = driver.current_url
-    parsed_url = urlparse(url)
-
-    # construindo a URL principal (esquema + netloc)
+    parsed_url = urlparse(driver.current_url)
     url_principal = f"{parsed_url.scheme}://{parsed_url.netloc}"
  
     if not ul_elements:
@@ -123,51 +120,32 @@ def process_ul(grau, driver, soup):
         for dados in lis:
             link_element = dados.find('a', class_='linkProcesso')
             if link_element:
-                link = link_element.get('href')
-                if link:
-                    # verifica se o link e um caminho relativo
-                    if link.startswith('/'):
-                        full_url = f"{url_principal}{link}"
-                    else:
-                        full_url = link
-
-                    logger.info("Abrindo link: %s", full_url)
-                    driver.get(full_url)
-
-                    # coleta os dados da nova pagina
-                    html = driver.page_source
-                    soup_new = BeautifulSoup(html, 'html.parser')
-
-                    data = extract_data_from_soup(soup_new, grau)
-                    data['Partes'] = extract_partes(soup_new)
-                    data['Movimentações'] = extract_movimentacoes(soup_new)
-
-                    results.append(data)
+                full_url = f"{url_principal}{link_element.get('href')}" if link_element.get('href').startswith('/') else link_element.get('href')
+                logger.info("Abrindo link: %s", full_url)
+                driver.get(full_url)
+                soup_new = BeautifulSoup(driver.page_source, 'html.parser')
+                data = extract_data_from_soup(soup_new, grau)
+                data['Partes'] = extract_partes(soup_new)
+                data['Movimentações'] = extract_movimentacoes(soup_new)
+                results.append(data)
             else:
                 logger.warning("Link com a classe 'linkProcesso' não encontrado em <li>: %s", dados.get_text(strip=True))
 
     return results
 
-
 def fetch_data(nro_processo, url):
-    # cpopg = Consulta de Processos de 1º Grau // cposg5 = Consulta de Processos de 2º Grau
     grau = "primeiro_grau" if "cpopg" in url else "segundo_grau"
-
-    # configura opcoes do chrome
+    
     options = Options()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     
-    # configura o servico do chromedriver
     service = Service(ChromeDriverManager().install())
-    # service = Service('/usr/local/bin/chromedriver-linux64/chromedriver')
-
-    # inicializa o webdriver com as opcoes e servico configurados
     driver = webdriver.Chrome(service=service, options=options)
     wait = WebDriverWait(driver, 10)
     data = {}
-    
+
     try:
         logger.info("Acessando URL: %s", url)
         driver.get(url)
@@ -175,40 +153,33 @@ def fetch_data(nro_processo, url):
         search_box = wait.until(EC.presence_of_element_located((By.ID, "numeroDigitoAnoUnificado")))
         search_box.send_keys(nro_processo)
         search_box.send_keys(Keys.RETURN)
-        logger.info("A busca pelo processo %s foi iniciada no %s.", nro_processo, grau)
+        logger.info("Busca pelo processo %s iniciada.", nro_processo)
 
-        html = driver.page_source
-        soup = BeautifulSoup(html, 'html.parser')
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
 
-        # verifica a existencia de mensagem de erro, caso o nro do processo esteja errado
         try:
             erro_element = driver.find_element(By.ID, "spwTabelaMensagem")
             erro_msg = erro_element.text.strip()
             if erro_msg:
-                logger.warning("Processo %s não encontrado no %s, ou número está incorreto.", nro_processo, grau)
+                logger.warning("Processo %s não encontrado.", nro_processo)
                 return {"Dados Processuais": {}}
         except NoSuchElementException:
-            logger.info("Nenhum erro encontrado. Continuando a extração dos dados.")
+            logger.info("Nenhum erro encontrado. Continuando extração.")
 
-        # interage com o modal, se necessario
         soup = interact_with_modal(driver, wait)
-
-        # verifica ul
         results = process_ul(grau, driver, soup)
         
         if not results:
-            # coleta os dados do processo se <ul> não for encontrado
-            logger.info("Nenhuma lista de instâncias do processo.")
+            logger.info("Nenhuma lista de instâncias encontrada.")
             data = extract_data_from_soup(soup, grau)
             data['Partes'] = extract_partes(soup)
             data['Movimentações'] = extract_movimentacoes(soup)
             results = [data]
-            logger.info("Dados coletados.")
 
         return {"Dados Processuais": results}
-    
+
     except (TimeoutException, WebDriverException) as e:
-        logger.error("Erro ocorreu durante a busca: %s", e)
+        logger.error("Erro durante a busca: %s", e)
         return {"Dados Processuais": {}}
 
     finally:

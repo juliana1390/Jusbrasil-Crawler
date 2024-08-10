@@ -17,7 +17,7 @@ numero do processo: 0710802-55.2018.8.02.0001
 Número: 0710802
 Dígito Verificador: 55
 Ano: 2018
-Comarca: 8
+Órgão: 8
 Código do Tribunal: 02
 Código da Vara: 0001
 -----------------------------------
@@ -27,8 +27,8 @@ numero_digito_ano_unificado: 0710802552018
 jtr_numero_unificado: 802
 foro_numero_unificado: 0001
 
-parse_nro_processo = deixa a requisicao no formato adequado para a busca,
-ja que o valor de comarca e tribunal ja consta na pagina web
+parse_nro_processo = deixa o input no formato adequado para a busca,
+ja que o valor de orgao e tribunal ja consta na pagina web
 """
 def parse_nro_processo(nro_processo):
     if len(nro_processo) < 19:

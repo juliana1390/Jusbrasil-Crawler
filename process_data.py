@@ -1,12 +1,22 @@
 import json
+import logging
 import requests
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+# configura o logger
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    handlers=[
+                        logging.FileHandler("process_data.log"),  # log em arquivo
+                        logging.StreamHandler()  # log no console
+                    ])
+logger = logging.getLogger(__name__)
+
 def fetch_process_data(item, url):
     try:
         response = requests.post(url, json=item)
-        print(f"Requisitando dados {item['nro_processo']}")
+        logger.info(f"Requisitando dados {item['nro_processo']}")
         if response.status_code == 200:
             response_data = response.json()
             return {
@@ -15,10 +25,13 @@ def fetch_process_data(item, url):
             }
         else:
             response_data = response.json()
-            print(f"\nOcorreu um erro durante a pesquisa:\nProcesso: {item['nro_processo']}\nErro: {response.status_code}\nMensagem: {response_data.text}")
+            logger.error(f"Ocorreu um erro durante a pesquisa: "
+                          f"Processo: {item['nro_processo']} | "
+                          f"Erro: {response.status_code} | "
+                          f"Mensagem: {response.text}")
             return
     except Exception as e:
-        print(f"Exceção ao requisitar dados para {item['nro_processo']}: {str(e)}")
+        logger.exception(f"Exceção ao requisitar dados para {item['nro_processo']}: {str(e)}")
         return
     
 def process_data():
@@ -39,11 +52,11 @@ def process_data():
                 process_number = result["Número do processo"]
                 output_filename = f"processo_{process_number}_({timestamp}).json"
                 
-                # Salva a resposta em um arquivo JSON separado
+                # salva a resposta em um arquivo JSON separado
                 with open(output_filename, 'w', encoding='utf-8') as outfile:
                     json.dump(result, outfile, ensure_ascii=False, indent=4)
                 
-                print(f"Resultado salvo em: {output_filename}")
+                logger.info(f"\nResultado salvo em: {output_filename}")
 
 if __name__ == "__main__":
     process_data()
