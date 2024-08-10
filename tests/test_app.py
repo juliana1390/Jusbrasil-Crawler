@@ -21,3 +21,33 @@ def test_invalid_process(client):
     data = json.loads(response.data)
     assert "erro" in data
     assert data["erro"] == "Número do processo está no formato incorreto"
+
+def test_empty_process_number(client):
+    response = client.post('/api/process', json={"nro_processo": ""})
+    assert response.status_code == 400
+    data = json.loads(response.data)
+    assert "erro" in data
+    assert data["erro"] == "Número do processo não pode estar vazio"
+
+def test_non_existent_process(client):
+    response = client.post('/api/process', json={"nro_processo": "99999999999999999999"})
+    assert response.status_code == 404
+    data = json.loads(response.data)
+    assert "erro" in data
+    assert data["erro"] == "Processo não encontrado"
+
+
+def test_process_number_with_unexpected_characters(client):
+    response = client.post('/api/process', json={"nro_processo": "0710802552018802@0001"})
+    assert response.status_code == 400
+    data = json.loads(response.data)
+    assert "erro" in data
+    assert data["erro"] == "Número do processo contém caracteres inválidos"
+
+def test_server_unavailable(client):
+    # simula a indisponibilidade do servidor
+    response = client.post('/api/process', json={"nro_processo": "07108025520188020001"})
+    assert response.status_code == 503
+    data = json.loads(response.data)
+    assert "erro" in data
+    assert data["erro"] == "Serviço indisponível"

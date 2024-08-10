@@ -6,3 +6,9 @@ def test_fetch_data():
     nro_processo = "07108025520188020001"
     result = fetch_data(nro_processo, url)
     assert "Dados Processuais" in result
+
+def test_invalid_url():
+    url = "https://invalid-url.example.com"
+    nro_processo = "07108025520188020001"
+    result = fetch_data(nro_processo, url)
+    assert result is None or "erro" in result
