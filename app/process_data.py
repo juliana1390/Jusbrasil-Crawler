@@ -1,3 +1,4 @@
+import os
 import json
 import logging
 import requests
@@ -8,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     handlers=[
-                        logging.FileHandler("process_data.log"),  # log em arquivo
+                        logging.FileHandler("logs/process_data.log"),  # log em arquivo
                         logging.StreamHandler()  # log no console
                     ])
 logger = logging.getLogger(__name__)
@@ -37,7 +38,7 @@ def fetch_process_data(item, url):
 def process_data():
     url = "http://flask_app:5000/api/process" # docker
 
-    with open('input_file.json', 'r') as file:
+    with open('input/input_file.json', 'r') as file:
         data = json.load(file)
 
     """
@@ -71,12 +72,16 @@ def process_data():
                 timestamp = now.strftime("%d-%m-%Y_%H:%M:%S")
                 process_number = result["Número do processo"]
                 output_filename = f"processo_{process_number}_({timestamp}).json"
+
+                # Salva o arquivo no diretório de saída
+                output_path = os.path.join('output', output_filename)
+            
                 
                 # salva a resposta em um arquivo JSON
-                with open(output_filename, 'w', encoding='utf-8') as outfile:
+                with open(output_path, 'w', encoding='utf-8') as outfile:
                     json.dump(result, outfile, ensure_ascii=False, indent=4)
                 
-                logger.info(f"\nResultado salvo em: {output_filename}")
+                logger.info(f"\nResultado salvo em: {output_path}")
 
 if __name__ == "__main__":
     process_data()

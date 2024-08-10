@@ -17,7 +17,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException,
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     handlers=[
-                        logging.FileHandler("crawler_data.log"),  # log em arquivo
+                        logging.FileHandler("logs/crawler_data.log"),  # log em arquivo
                         logging.StreamHandler()  # log no console
                     ])
 

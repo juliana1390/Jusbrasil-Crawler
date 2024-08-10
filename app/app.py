@@ -1,5 +1,5 @@
 from flask import Flask, request, Response
-from crawler import fetch_data
+from app.crawler import fetch_data
 import json
 
 app = Flask(__name__)
