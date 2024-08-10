@@ -55,10 +55,10 @@ def parse_nro_processo(nro_processo):
         "Tribunal": tribunal
     }
 
-def generate_result(result_first_instance, result_second_instance):
+def generate_result(result_primeiro_grau, result_segundo_grau):
     response_data = {
-        "Primeiro Grau": result_first_instance,
-        "Segundo Grau": result_second_instance
+        "Primeiro Grau": result_primeiro_grau,
+        "Segundo Grau": result_segundo_grau
     }
 
     # conversao para JSON

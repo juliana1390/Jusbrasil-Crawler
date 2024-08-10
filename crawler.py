@@ -46,7 +46,7 @@ def extract_data_from_soup(soup, grau):
         }
     }
     
-    return {**common_fields, **specific_fields.get(grau, {})}
+    return {**common_fields, **specific_fields.get(grau, {})} # desempacota os dicionarios e retorna
 
 def extract_partes(soup):
     partes = {}
@@ -59,11 +59,11 @@ def extract_partes(soup):
                     nome = cols[0].get_text(strip=True)
                     advogado = cols[1].get_text(strip=True)
                     
-                    # verifica se ha "Advogado:" ou "Advogada:" e adiciona um espaco
+                    # verifica se ha "Advogado:" ou "Advogada:" e adiciona " | " para separar as strings
                     if "Advogado:" in advogado:
-                        advogado = advogado.replace("Advogado:", " | Advogado:")
+                        advogado = advogado.replace("Advogado:", " | Advogado: ")
                     elif "Advogada:" in advogado:
-                        advogado = advogado.replace("Advogada:", " | Advogada:")
+                        advogado = advogado.replace("Advogada:", " | Advogada: ")
                     
                     partes[nome] = advogado
         else:
@@ -110,15 +110,14 @@ def process_ul(grau, driver, soup):
     url_principal = f"{parsed_url.scheme}://{parsed_url.netloc}"
  
     if not ul_elements:
-        logger.warning("Nenhum elemento <ul> com a classe 'unj-list-row' encontrado.")
         return []
 
     results = []
 
     for item in ul_elements:
         lis = item.find_all('li')
-        for dados in lis:
-            link_element = dados.find('a', class_='linkProcesso')
+        for data in lis:
+            link_element = data.find('a', class_='linkProcesso')
             if link_element:
                 full_url = f"{url_principal}{link_element.get('href')}" if link_element.get('href').startswith('/') else link_element.get('href')
                 logger.info("Abrindo link: %s", full_url)
@@ -129,13 +128,15 @@ def process_ul(grau, driver, soup):
                 data['Movimentações'] = extract_movimentacoes(soup_new)
                 results.append(data)
             else:
-                logger.warning("Link com a classe 'linkProcesso' não encontrado em <li>: %s", dados.get_text(strip=True))
+                logger.warning("Link com a classe 'linkProcesso' não encontrado em <li>: %s", data.get_text(strip=True))
 
     return results
 
 def fetch_data(nro_processo, url):
+    # cpopg = Consulta de Processos de 1º Grau // cposg5 = Consulta de Processos de 2º Grau
     grau = "primeiro_grau" if "cpopg" in url else "segundo_grau"
     
+    # inicializa opcoes / driver
     options = Options()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
@@ -144,6 +145,8 @@ def fetch_data(nro_processo, url):
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
     wait = WebDriverWait(driver, 10)
+
+    # dicionario para armazenar os resultados
     data = {}
 
     try:
@@ -167,6 +170,8 @@ def fetch_data(nro_processo, url):
             logger.info("Nenhum erro encontrado. Continuando extração.")
 
         soup = interact_with_modal(driver, wait)
+
+        # funcao utilizada em segundo grau para retornar mais de um resultado
         results = process_ul(grau, driver, soup)
         
         if not results:
