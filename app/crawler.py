@@ -185,7 +185,7 @@ def fetch_data(nro_processo, url):
 
     except (TimeoutException, WebDriverException) as e:
         logger.error("Erro durante a busca: %s", e)
-        return {"Dados Processuais": {}}
+        return{'erro': str(e)}
 
     finally:
         driver.quit()

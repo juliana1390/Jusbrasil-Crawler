@@ -31,7 +31,7 @@ RUN pytest --maxfail=1 --disable-warnings -q
 # Estagio final para produção
 FROM base AS final
 
-# Exponhe a porta 5000 para o aplicativo Flask
+# Expoe a porta 5000 para o aplicativo Flask
 EXPOSE 5000
 
 # Comando para executar o aplicativo com Gunicorn

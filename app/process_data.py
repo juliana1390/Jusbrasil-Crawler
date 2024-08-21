@@ -18,22 +18,34 @@ def fetch_process_data(item, url):
     try:
         response = requests.post(url, json=item)
         logger.info(f"Requisitando dados {item['nro_processo']}")
+
         if response.status_code == 200:
-            response_data = response.json()
-            return {
-                "Número do processo": item['nro_processo'],
-                "Consulta": response_data
-            }
+            try:
+                response_data = response.json()
+                return {
+                    "Número do processo": item['nro_processo'],
+                    "Consulta": response_data
+                }
+            except json.JSONDecodeError:
+                logger.error(f"Resposta não JSON para o processo {item['nro_processo']}")
+                return None
         else:
-            response_data = response.json()
-            logger.error(f"Ocorreu um erro durante a pesquisa: "
-                          f"Processo: {item['nro_processo']} | "
-                          f"Erro: {response.status_code} | "
-                          f"Mensagem: {response.text}")
-            return
+            try:
+                response_data = response.json()
+                logger.error(f"Ocorreu um erro durante a pesquisa: "
+                            f"Processo: {item['nro_processo']} | "
+                            f"Erro: {response.status_code} | "
+                            f"Mensagem: {response_data}")
+            except json.JSONDecodeError:
+                logger.error(f"Ocorreu um erro durante a pesquisa: "
+                              f"Processo: {item['nro_processo']} | "
+                              f"Erro: {response.status_code} | "
+                              f"Mensagem: {response.text}")
+            return None
+        
     except Exception as e:
         logger.exception(f"Exceção ao requisitar dados para {item['nro_processo']}: {str(e)}")
-        return
+        return None
     
 def process_data():
     url = "http://flask_app:5000/api/process" # docker
@@ -73,7 +85,7 @@ def process_data():
                 process_number = result["Número do processo"]
                 output_filename = f"processo_{process_number}_({timestamp}).json"
 
-                # Salva o arquivo no diretório de saída
+                # salva o arquivo no diretorio de saida
                 output_path = os.path.join('output', output_filename)
             
                 
