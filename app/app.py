@@ -73,7 +73,7 @@ def generate_result(result_primeiro_grau, result_segundo_grau):
 def get_data():
     data = request.json
     nro_processo = data.get("nro_processo")
-
+    
     if not nro_processo:
         return Response (
             json.dumps({'erro': 'Número do processo não pode estar vazio'}),
@@ -90,28 +90,21 @@ def get_data():
         ), 400
     
     # chama o crawler
-    try:
-        if parse_data['Tribunal'] == 'TJAL':
-            result_tjal1 = fetch_data(parse_data['NumeroDigitoAnoUnificado'], url_tjal_1)
-            result_tjal2 = fetch_data(parse_data['NumeroDigitoAnoUnificado'], url_tjal_2)
-            return generate_result(result_tjal1, result_tjal2)
+    if parse_data['Tribunal'] == 'TJAL':
+        result_tjal1 = fetch_data(parse_data['NumeroDigitoAnoUnificado'], url_tjal_1)
+        result_tjal2 = fetch_data(parse_data['NumeroDigitoAnoUnificado'], url_tjal_2)
+        return generate_result(result_tjal1, result_tjal2)
 
-        elif parse_data['Tribunal'] == 'TJCE':
-            result_tjce1 = fetch_data(parse_data['NumeroDigitoAnoUnificado'], url_tjce_1)
-            result_tjce2 = fetch_data(parse_data['NumeroDigitoAnoUnificado'], url_tjce_2)
-            return generate_result(result_tjce1, result_tjce2)    
+    elif parse_data['Tribunal'] == 'TJCE':
+        result_tjce1 = fetch_data(parse_data['NumeroDigitoAnoUnificado'], url_tjce_1)
+        result_tjce2 = fetch_data(parse_data['NumeroDigitoAnoUnificado'], url_tjce_2)
+        return generate_result(result_tjce1, result_tjce2)    
 
-        else:
-            return Response(
-                json.dumps({'erro': 'Processo não encontrado'}),
-                mimetype='application/json; charset=utf-8'
-            ), 400
-            
-    except TimeoutError:
+    else:
         return Response(
-                json.dumps({'erro': 'Serviço indisponível'}),
-                mimetype='application/json; charset=utf-8'
-            ), 503
+            json.dumps({'erro': 'Processo não encontrado'}),
+            mimetype='application/json; charset=utf-8'
+        ), 400
     
 if __name__ == "__main__":
     app.run(debug=True)

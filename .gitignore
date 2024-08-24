@@ -163,5 +163,5 @@ cython_debug/
 
 # Ignorar arquivos temporários gerados pelo BeautifulSoup
 *.html
-*.json
+# *.json
 *.xml

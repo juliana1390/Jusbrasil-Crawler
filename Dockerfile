@@ -5,11 +5,11 @@ WORKDIR /app
 
 ENV PYTHONPATH=/app
 
-# Copia o arquivo de requisitos e instala as dependências
+# Copia o arquivo de requisitos e instala as dependencias
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Instala pacotes necessaios para o Selenium
+# Instala pacotes necessarios para o Selenium
 RUN apt-get update && \
     apt-get install -y wget gnupg && \
     wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
