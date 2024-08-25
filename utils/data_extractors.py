@@ -1,33 +1,18 @@
-import logging
-from bs4 import BeautifulSoup
-from selenium import webdriver
-from urllib.parse import urlparse
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
+from utils.logger_config import setup_logger
+from selenium.webdriver.common.by import By
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup
 
-# passar informacoes atraves do logging
-
-# configura o logger
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    handlers=[
-                        logging.FileHandler("logs/crawler_data.log"),  # log em arquivo
-                        logging.StreamHandler()  # log no console
-                    ])
-
-logger = logging.getLogger(__name__)
+# configura nome para logger
+logger = setup_logger(__name__)
 
 def find_text(soup, selector, default=""):
     element = soup.find(id=selector)
     return element.get_text(strip=True) if element else default
 
-def extract_data_from_soup(soup, grau):
+def extract_data_from_soup(soup, grau, nro_processo):
     common_fields = {
         "Classe": find_text(soup, "classeProcesso", "N/A"),
         "Área": find_text(soup, "areaProcesso", "N/A"),
@@ -45,10 +30,10 @@ def extract_data_from_soup(soup, grau):
             "Relator": find_text(soup, "relatorProcesso", "N/A"),
         }
     }
-    
-    return {**common_fields, **specific_fields.get(grau, {})} # desempacota os dicionarios e retorna
+    logger.info(f"Dados processuais genéricos coletados para o processo {nro_processo} no {grau}!")
+    return {**common_fields, **specific_fields.get(grau, {})}
 
-def extract_partes(soup):
+def extract_partes(soup, grau):
     partes = {}
     try:
         table_partes = soup.find(id="tableTodasPartes") or soup.find(id="tablePartesPrincipais")
@@ -66,13 +51,14 @@ def extract_partes(soup):
                         advogado = advogado.replace("Advogada:", " | Advogada: ")
                     
                     partes[nome] = advogado
+            logger.info(f"Dados das partes coletados no {grau}!")
         else:
             logger.warning("Tabela de partes não encontrada.")
     except Exception as e:
         logger.error("Erro ao extrair partes: %s", e)
     return partes
 
-def extract_movimentacoes(soup):
+def extract_movimentacoes(soup, grau):
     movimentacoes = []
     try:
         table_movimentacoes = soup.find(id="tabelaTodasMovimentacoes")
@@ -83,6 +69,7 @@ def extract_movimentacoes(soup):
                     data = cols[0].get_text(strip=True)
                     descricao = " ".join([x.strip() for x in cols[2].get_text(strip=True).split("\n") if x.strip()])
                     movimentacoes.append({'data': data, 'descricao': descricao})
+            logger.info(f"Movimentações processuais coletadas no {grau}!\n")
         else:
             logger.warning("Tabela de movimentações não encontrada.")
     except Exception as e:
@@ -91,6 +78,7 @@ def extract_movimentacoes(soup):
 
 def interact_with_modal(driver, wait):
     try:
+        logger.info("=== Iniciando extração de dados! ===")
         modal_element = wait.until(EC.presence_of_element_located((By.ID, "modalIncidentes")))
         radio_button = modal_element.find_element(By.ID, "processoSelecionado")
         radio_button.click()
@@ -129,63 +117,5 @@ def process_ul(grau, driver, soup):
                 results.append(data)
             else:
                 logger.warning("Link com a classe 'linkProcesso' não encontrado em <li>: %s", data.get_text(strip=True))
-
+    logger.info("Dados coletados em todas as instâncias!\n")
     return results
-
-def fetch_data(nro_processo, url):
-    # cpopg = Consulta de Processos de 1º Grau // cposg5 = Consulta de Processos de 2º Grau
-    grau = "primeiro_grau" if "cpopg" in url else "segundo_grau"
-    
-    # inicializa opcoes / driver
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
-    wait = WebDriverWait(driver, 10)
-
-    # dicionario para armazenar os resultados
-    data = {}
-
-    try:
-        logger.info("Acessando URL: %s", url)
-        driver.get(url)
-        
-        search_box = wait.until(EC.presence_of_element_located((By.ID, "numeroDigitoAnoUnificado")))
-        search_box.send_keys(nro_processo)
-        search_box.send_keys(Keys.RETURN)
-        logger.info("Busca pelo processo %s iniciada.", nro_processo)
-
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-
-        try:
-            erro_element = driver.find_element(By.ID, "spwTabelaMensagem")
-            erro_msg = erro_element.text.strip()
-            if erro_msg:
-                logger.warning("Processo %s não encontrado.", nro_processo)
-                return {"Dados Processuais": {}}
-        except NoSuchElementException:
-            logger.info("Nenhum erro encontrado. Continuando extração.")
-
-        soup = interact_with_modal(driver, wait)
-
-        # funcao utilizada em segundo grau para retornar mais de um resultado
-        results = process_ul(grau, driver, soup)
-        
-        if not results:
-            logger.info("Nenhuma lista de instâncias encontrada.")
-            data = extract_data_from_soup(soup, grau)
-            data['Partes'] = extract_partes(soup)
-            data['Movimentações'] = extract_movimentacoes(soup)
-            results = [data]
-
-        return {"Dados Processuais": results}
-
-    except (TimeoutException, WebDriverException) as e:
-        logger.error("Erro durante a busca: %s", e)
-        return{'erro': str(e)}
-
-    finally:
-        driver.quit()

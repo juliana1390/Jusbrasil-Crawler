@@ -13,30 +13,16 @@ services:
       - TZ=America/Sao_Paulo
       - FLASK_ENV=development
 
-  process:
-    build:
-      context: .
-      target: final  # Usando o estagio final do Dockerfile
-    image: python-script:latest
-    container_name: python_script
-    command: python3 app/process_data.py
-    volumes:
-      - .:/app
-    environment:
-      - TZ=America/Sao_Paulo
-    depends_on:
-      - web
-
   test:
     build:
       context: .
       target: test  # Usando o estagio de testes do Dockerfile
     image: test-image:latest
     container_name: test_container
-    command: pytest --maxfail=1 --disable-warnings -q
+    command: pytest --maxfail=0 --disable-warnings -q
     volumes:
       - .:/app
     environment:
       - TZ=America/Sao_Paulo
     depends_on:
-      - web
+      - web      
