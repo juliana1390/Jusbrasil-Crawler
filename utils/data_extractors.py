@@ -12,7 +12,7 @@ def find_text(soup, selector, default=""):
     element = soup.find(id=selector)
     return element.get_text(strip=True) if element else default
 
-def extract_data_from_soup(soup, grau, nro_processo):
+def extract_data_from_soup(soup, grau, nro_completo):
     common_fields = {
         "Classe": find_text(soup, "classeProcesso", "N/A"),
         "Área": find_text(soup, "areaProcesso", "N/A"),
@@ -30,7 +30,7 @@ def extract_data_from_soup(soup, grau, nro_processo):
             "Relator": find_text(soup, "relatorProcesso", "N/A"),
         }
     }
-    logger.info(f"Dados processuais genéricos coletados para o processo {nro_processo} no {grau}!")
+    logger.info(f"Dados processuais genéricos coletados para o processo {nro_completo} no {grau}!")
     return {**common_fields, **specific_fields.get(grau, {})}
 
 def extract_partes(soup, grau):
@@ -78,7 +78,7 @@ def extract_movimentacoes(soup, grau):
 
 def interact_with_modal(driver, wait):
     try:
-        logger.info("=== Iniciando extração de dados! ===")
+        logger.info("\n=== Iniciando extração de dados! ===")
         modal_element = wait.until(EC.presence_of_element_located((By.ID, "modalIncidentes")))
         radio_button = modal_element.find_element(By.ID, "processoSelecionado")
         radio_button.click()

@@ -22,6 +22,10 @@ RUN pip install webdriver-manager && python -c "from webdriver_manager.chrome im
 # Copia arquivos do projeto
 COPY . /app
 
+# Copia o script de entrada e torna executavel
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 # Estagio de testes
 FROM base AS test
 
@@ -34,5 +38,5 @@ FROM base AS final
 # Expoe a porta 5000 para o aplicativo Flask
 EXPOSE 5000
 
-# Comando para executar o aplicativo com Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--timeout", "120", "wsgi:app"]
+# Comandos no entrypoint.sh
+ENTRYPOINT ["/app/entrypoint.sh"]

@@ -19,7 +19,7 @@ services:
       target: test  # Usando o estagio de testes do Dockerfile
     image: test-image:latest
     container_name: test_container
-    command: pytest --maxfail=0 --disable-warnings -q
+    command: pytest --maxfail=1 --disable-warnings -q
     volumes:
       - .:/app
     environment:

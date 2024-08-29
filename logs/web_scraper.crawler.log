@@ -1,0 +1,145 @@
+2024-08-29 12:13:03,362 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0039009-86.2010.8.02.0001 ===
+2024-08-29 12:13:03,362 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cpopg/open.do
+2024-08-29 12:13:03,372 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0700598-74.2020.8.02.0067 ===
+2024-08-29 12:13:03,372 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cpopg/open.do
+2024-08-29 12:13:03,390 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0050758-22.2021.8.06.0028 ===
+2024-08-29 12:13:03,390 - web_scraper.crawler - INFO - Acessando URL: https://esaj.tjce.jus.br/cpopg/open.do
+2024-08-29 12:13:03,497 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0710802-55.2018.8.02.0001 ===
+2024-08-29 12:13:03,497 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cpopg/open.do
+2024-08-29 12:13:03,533 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0718693-54.2023.8.02.0001 ===
+2024-08-29 12:13:03,533 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cpopg/open.do
+2024-08-29 12:13:08,204 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0709255-67.2024.8.02.0001 ===
+2024-08-29 12:13:08,205 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cpopg/open.do
+2024-08-29 12:13:16,847 - web_scraper.crawler - INFO - Busca iniciada no primeiro_grau!
+2024-08-29 12:13:17,933 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:18,306 - web_scraper.crawler - INFO - Busca iniciada no primeiro_grau!
+2024-08-29 12:13:18,423 - web_scraper.crawler - INFO - Busca iniciada no primeiro_grau!
+2024-08-29 12:13:18,857 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:19,203 - web_scraper.crawler - INFO - Busca iniciada no primeiro_grau!
+2024-08-29 12:13:19,251 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:19,351 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:19,738 - web_scraper.crawler - INFO - Busca iniciada no primeiro_grau!
+2024-08-29 12:13:20,095 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:20,419 - web_scraper.crawler - INFO - Busca iniciada no primeiro_grau!
+2024-08-29 12:13:21,016 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:28,172 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:13:29,082 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:13:29,362 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:13:29,649 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0050758-22.2021.8.06.0028 ===
+2024-08-29 12:13:29,649 - web_scraper.crawler - INFO - Acessando URL: https://esaj.tjce.jus.br/cposg5/open.do
+2024-08-29 12:13:29,951 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:13:30,178 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0718693-54.2023.8.02.0001 ===
+2024-08-29 12:13:30,178 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cposg5/open.do
+2024-08-29 12:13:30,516 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:13:30,541 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0710802-55.2018.8.02.0001 ===
+2024-08-29 12:13:30,541 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cposg5/open.do
+2024-08-29 12:13:30,997 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0039009-86.2010.8.02.0001 ===
+2024-08-29 12:13:30,997 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cposg5/open.do
+2024-08-29 12:13:31,526 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:13:32,074 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0700598-74.2020.8.02.0067 ===
+2024-08-29 12:13:32,074 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cposg5/open.do
+2024-08-29 12:13:32,288 - web_scraper.crawler - INFO - Busca iniciada no segundo_grau!
+2024-08-29 12:13:32,398 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0709255-67.2024.8.02.0001 ===
+2024-08-29 12:13:32,398 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cposg5/open.do
+2024-08-29 12:13:32,535 - web_scraper.crawler - WARNING - Processo 0050758-22.2021.8.06.0028 não encontrado.
+
+2024-08-29 12:13:34,022 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0710757-98.2023.8.02.0058 ===
+2024-08-29 12:13:34,022 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cpopg/open.do
+2024-08-29 12:13:35,486 - web_scraper.crawler - INFO - Busca iniciada no segundo_grau!
+2024-08-29 12:13:36,817 - web_scraper.crawler - WARNING - Processo 0718693-54.2023.8.02.0001 não encontrado.
+
+2024-08-29 12:13:36,846 - web_scraper.crawler - INFO - Busca iniciada no segundo_grau!
+2024-08-29 12:13:37,323 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:37,407 - web_scraper.crawler - INFO - Busca iniciada no segundo_grau!
+2024-08-29 12:13:37,465 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:38,235 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0149892-79.2016.8.06.0001 ===
+2024-08-29 12:13:38,235 - web_scraper.crawler - INFO - Acessando URL: https://esaj.tjce.jus.br/cpopg/open.do
+2024-08-29 12:13:38,991 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:13:39,294 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:13:40,683 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0201379-69.2022.8.06.0101 ===
+2024-08-29 12:13:40,683 - web_scraper.crawler - INFO - Acessando URL: https://esaj.tjce.jus.br/cpopg/open.do
+2024-08-29 12:13:41,356 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0050087-33.2020.8.06.0028 ===
+2024-08-29 12:13:41,357 - web_scraper.crawler - INFO - Acessando URL: https://esaj.tjce.jus.br/cpopg/open.do
+2024-08-29 12:13:42,002 - web_scraper.crawler - INFO - Busca iniciada no segundo_grau!
+2024-08-29 12:13:42,022 - web_scraper.crawler - INFO - Busca iniciada no segundo_grau!
+2024-08-29 12:13:42,416 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:42,796 - web_scraper.crawler - WARNING - Processo 0709255-67.2024.8.02.0001 não encontrado.
+
+2024-08-29 12:13:43,746 - web_scraper.crawler - INFO - Busca iniciada no primeiro_grau!
+2024-08-29 12:13:44,269 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:45,545 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0709255-67.2024.8.02.0001  ===
+2024-08-29 12:13:45,545 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cpopg/open.do
+2024-08-29 12:13:49,799 - web_scraper.crawler - INFO - Busca iniciada no primeiro_grau!
+2024-08-29 12:13:50,226 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:54,972 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:13:55,086 - web_scraper.crawler - INFO - Busca iniciada no primeiro_grau!
+2024-08-29 12:13:55,399 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:55,918 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0710757-98.2023.8.02.0058 ===
+2024-08-29 12:13:55,918 - web_scraper.crawler - INFO - Acessando URL: https://www2.tjal.jus.br/cposg5/open.do
+2024-08-29 12:13:56,600 - web_scraper.crawler - INFO - Busca iniciada no primeiro_grau!
+2024-08-29 12:13:56,707 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:13:57,391 - web_scraper.crawler - INFO - Busca iniciada no primeiro_grau!
+2024-08-29 12:13:58,004 - web_scraper.crawler - WARNING - Processo 0709255-67.2024.8.02.0001  não encontrado.
+
+2024-08-29 12:13:59,089 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0709255-67.2024.8.02.0001 ===
+2024-08-29 12:13:59,090 - web_scraper.crawler - INFO - Acessando URL: https://invalid-url.example.com
+2024-08-29 12:14:00,485 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:14:01,907 - web_scraper.crawler - ERROR - Erro durante a busca: Verifique os dados e a url inseridos na busca.
+
+2024-08-29 12:14:02,068 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0149892-79.2016.8.06.0001 ===
+2024-08-29 12:14:02,068 - web_scraper.crawler - INFO - Acessando URL: https://esaj.tjce.jus.br/cposg5/open.do
+2024-08-29 12:14:02,710 - web_scraper.crawler - INFO - Busca iniciada no segundo_grau!
+2024-08-29 12:14:02,777 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:14:05,192 - web_scraper.crawler - INFO - Busca iniciada no segundo_grau!
+2024-08-29 12:14:05,524 - web_scraper.crawler - WARNING - Processo 0149892-79.2016.8.06.0001 não encontrado.
+
+2024-08-29 12:14:05,541 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:14:06,283 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0201379-69.2022.8.06.0101 ===
+2024-08-29 12:14:06,283 - web_scraper.crawler - INFO - Acessando URL: https://esaj.tjce.jus.br/cposg5/open.do
+2024-08-29 12:14:06,917 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:14:08,024 - web_scraper.crawler - INFO - 
+=== Busca pelo processo 0050087-33.2020.8.06.0028 ===
+2024-08-29 12:14:08,024 - web_scraper.crawler - INFO - Acessando URL: https://esaj.tjce.jus.br/cposg5/open.do
+2024-08-29 12:14:09,774 - web_scraper.crawler - INFO - Busca iniciada no segundo_grau!
+2024-08-29 12:14:10,028 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:14:11,324 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:14:11,757 - web_scraper.crawler - INFO - Busca iniciada no segundo_grau!
+2024-08-29 12:14:11,878 - web_scraper.crawler - INFO - Nenhum erro encontrado. Continuando extração.
+2024-08-29 12:14:12,995 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+
+2024-08-29 12:14:22,050 - web_scraper.crawler - INFO - Nenhuma lista de instâncias encontrada.
+

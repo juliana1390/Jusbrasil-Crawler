@@ -1,12 +1,109 @@
-2024-08-25 20:27:35,344 - utils.data_extractors - INFO - === Iniciando extração de dados! ===
-2024-08-25 20:27:45,520 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
-2024-08-25 20:27:45,631 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0050758-22.2021.8.06.0028 no primeiro_grau!
-2024-08-25 20:27:45,639 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
-2024-08-25 20:27:45,643 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
+2024-08-29 12:13:17,933 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:18,857 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:19,251 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:19,351 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:20,095 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:21,017 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:28,066 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:13:28,178 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0050758-22.2021.8.06.0028 no primeiro_grau!
+2024-08-29 12:13:28,181 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
+2024-08-29 12:13:28,182 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
 
-2024-08-25 20:27:52,314 - utils.data_extractors - INFO - === Iniciando extração de dados! ===
-2024-08-25 20:28:02,496 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
-2024-08-25 20:28:02,640 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0710802-55.2018.8.02.0001 no primeiro_grau!
-2024-08-25 20:28:02,641 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
-2024-08-25 20:28:02,644 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
+2024-08-29 12:13:28,962 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:13:29,089 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0718693-54.2023.8.02.0001 no primeiro_grau!
+2024-08-29 12:13:29,090 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
+2024-08-29 12:13:29,092 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
+
+2024-08-29 12:13:29,275 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:13:29,371 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0710802-55.2018.8.02.0001 no primeiro_grau!
+2024-08-29 12:13:29,373 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
+2024-08-29 12:13:29,376 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
+
+2024-08-29 12:13:29,843 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:13:29,967 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0039009-86.2010.8.02.0001 no primeiro_grau!
+2024-08-29 12:13:29,975 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
+2024-08-29 12:13:29,980 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
+
+2024-08-29 12:13:30,232 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:13:30,595 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0700598-74.2020.8.02.0067 no primeiro_grau!
+2024-08-29 12:13:30,596 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
+2024-08-29 12:13:30,611 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
+
+2024-08-29 12:13:31,479 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:13:31,531 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0709255-67.2024.8.02.0001 no primeiro_grau!
+2024-08-29 12:13:31,535 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
+2024-08-29 12:13:31,538 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
+
+2024-08-29 12:13:37,324 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:37,466 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:38,982 - utils.data_extractors - INFO - Interação com modal bem sucedida.
+2024-08-29 12:13:39,104 - utils.data_extractors - INFO - Interação com modal bem sucedida.
+2024-08-29 12:13:39,296 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0039009-86.2010.8.02.0001 no segundo_grau!
+2024-08-29 12:13:39,308 - utils.data_extractors - INFO - Dados das partes coletados no segundo_grau!
+2024-08-29 12:13:39,316 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0710802-55.2018.8.02.0001 no segundo_grau!
+2024-08-29 12:13:39,316 - utils.data_extractors - INFO - Movimentações processuais coletadas no segundo_grau!
+
+2024-08-29 12:13:39,318 - utils.data_extractors - INFO - Dados das partes coletados no segundo_grau!
+2024-08-29 12:13:39,322 - utils.data_extractors - INFO - Movimentações processuais coletadas no segundo_grau!
+
+2024-08-29 12:13:42,416 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:44,269 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:50,226 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:52,575 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:13:52,642 - utils.data_extractors - INFO - Abrindo link: https://www2.tjal.jus.br/cposg5/show.do?localPesquisa.cdLocal=900&processo.codigo=P00007Q2G0000&processo.foro=900&conversationId=&paginaConsulta=0&cbPesquisa=NUMPROC&numeroDigitoAnoUnificado=0700598-74.2020&foroNumeroUnificado=0067&dePesquisaNuUnificado=0700598-74.2020.8.02.0067&dePesquisaNuUnificado=UNIFICADO&dePesquisa=&tipoNuProcesso=UNIFICADO
+2024-08-29 12:13:54,871 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:13:54,978 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0710757-98.2023.8.02.0058 no primeiro_grau!
+2024-08-29 12:13:54,980 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
+2024-08-29 12:13:54,982 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
+
+2024-08-29 12:13:55,399 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:13:56,707 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:14:00,374 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:14:00,498 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0149892-79.2016.8.06.0001 no primeiro_grau!
+2024-08-29 12:14:00,502 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
+2024-08-29 12:14:00,505 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
+
+2024-08-29 12:14:02,777 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:14:05,442 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:14:05,554 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0201379-69.2022.8.06.0101 no primeiro_grau!
+2024-08-29 12:14:05,555 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
+2024-08-29 12:14:05,558 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
+
+2024-08-29 12:14:06,790 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:14:06,932 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0050087-33.2020.8.06.0028 no primeiro_grau!
+2024-08-29 12:14:06,934 - utils.data_extractors - INFO - Dados das partes coletados no primeiro_grau!
+2024-08-29 12:14:06,937 - utils.data_extractors - INFO - Movimentações processuais coletadas no primeiro_grau!
+
+2024-08-29 12:14:10,028 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:14:11,314 - utils.data_extractors - INFO - Interação com modal bem sucedida.
+2024-08-29 12:14:11,336 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0201379-69.2022.8.06.0101 no segundo_grau!
+2024-08-29 12:14:11,341 - utils.data_extractors - INFO - Dados das partes coletados no segundo_grau!
+2024-08-29 12:14:11,345 - utils.data_extractors - INFO - Movimentações processuais coletadas no segundo_grau!
+
+2024-08-29 12:14:11,878 - utils.data_extractors - INFO - 
+=== Iniciando extração de dados! ===
+2024-08-29 12:14:12,899 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:14:13,010 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0710757-98.2023.8.02.0058 no segundo_grau!
+2024-08-29 12:14:13,017 - utils.data_extractors - INFO - Dados das partes coletados no segundo_grau!
+2024-08-29 12:14:13,022 - utils.data_extractors - INFO - Movimentações processuais coletadas no segundo_grau!
+
+2024-08-29 12:14:21,986 - utils.data_extractors - INFO - Modal não encontrado. Continuando...
+2024-08-29 12:14:22,059 - utils.data_extractors - INFO - Dados processuais genéricos coletados para o processo 0050087-33.2020.8.06.0028 no segundo_grau!
+2024-08-29 12:14:22,060 - utils.data_extractors - INFO - Dados das partes coletados no segundo_grau!
+2024-08-29 12:14:22,062 - utils.data_extractors - INFO - Movimentações processuais coletadas no segundo_grau!
 

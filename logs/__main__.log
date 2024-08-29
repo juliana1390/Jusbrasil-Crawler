@@ -1,0 +1,41 @@
+2024-08-29 12:13:02,321 - __main__ - INFO - Arquivo de input lido.
+2024-08-29 12:13:02,329 - __main__ - INFO - <Future at 0x7f9dd10e4d50 state=running> criada!
+2024-08-29 12:13:02,329 - __main__ - INFO - <Future at 0x7f9dd0e9b110 state=running> criada!
+2024-08-29 12:13:02,330 - __main__ - INFO - <Future at 0x7f9dd0ea7ad0 state=running> criada!
+2024-08-29 12:13:02,330 - __main__ - INFO - <Future at 0x7f9dd0ebcfd0 state=running> criada!
+2024-08-29 12:13:02,330 - __main__ - INFO - <Future at 0x7f9dd0ebe310 state=running> criada!
+2024-08-29 12:13:02,331 - __main__ - INFO - <Future at 0x7f9dd0ed06d0 state=pending> criada!
+2024-08-29 12:13:02,331 - __main__ - INFO - <Future at 0x7f9dd04e0710 state=pending> criada!
+2024-08-29 12:13:02,331 - __main__ - INFO - <Future at 0x7f9dd04e06d0 state=pending> criada!
+2024-08-29 12:13:02,331 - __main__ - INFO - <Future at 0x7f9dd04e0890 state=pending> criada!
+2024-08-29 12:13:33,008 - __main__ - INFO - Requisitando dados 0050758-22.2021.8.06.0028
+2024-08-29 12:13:33,011 - __main__ - INFO - 
+Resultado salvo em: output/processo_0050758-22.2021.8.06.0028_(29-08-2024_12:13:33).json
+2024-08-29 12:13:37,506 - __main__ - INFO - Requisitando dados 0718693-54.2023.8.02.0001
+2024-08-29 12:13:37,511 - __main__ - INFO - 
+Resultado salvo em: output/processo_0718693-54.2023.8.02.0001_(29-08-2024_12:13:37).json
+2024-08-29 12:13:39,933 - __main__ - INFO - Requisitando dados 0039009-86.2010.8.02.0001
+2024-08-29 12:13:39,944 - __main__ - INFO - 
+Resultado salvo em: output/processo_0039009-86.2010.8.02.0001_(29-08-2024_12:13:39).json
+2024-08-29 12:13:40,331 - __main__ - INFO - Requisitando dados 0710802-55.2018.8.02.0001
+2024-08-29 12:13:40,337 - __main__ - INFO - 
+Resultado salvo em: output/processo_0710802-55.2018.8.02.0001_(29-08-2024_12:13:40).json
+2024-08-29 12:13:54,919 - __main__ - INFO - Requisitando dados 0700598-74.2020.8.02.0067
+2024-08-29 12:13:54,919 - __main__ - ERROR - Ocorreu um erro durante a pesquisa: Processo: 0700598-74.2020.8.02.0067 | Erro: 500 | Mensagem: <!doctype html>
+<html lang=en>
+<title>500 Internal Server Error</title>
+<h1>Internal Server Error</h1>
+<p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
+
+2024-08-29 12:14:05,621 - __main__ - INFO - Requisitando dados 0149892-79.2016.8.06.0001
+2024-08-29 12:14:05,622 - __main__ - INFO - 
+Resultado salvo em: output/processo_0149892-79.2016.8.06.0001_(29-08-2024_12:14:05).json
+2024-08-29 12:14:11,420 - __main__ - INFO - Requisitando dados 0201379-69.2022.8.06.0101
+2024-08-29 12:14:11,423 - __main__ - INFO - 
+Resultado salvo em: output/processo_0201379-69.2022.8.06.0101_(29-08-2024_12:14:11).json
+2024-08-29 12:14:13,101 - __main__ - INFO - Requisitando dados 0710757-98.2023.8.02.0058
+2024-08-29 12:14:13,104 - __main__ - INFO - 
+Resultado salvo em: output/processo_0710757-98.2023.8.02.0058_(29-08-2024_12:14:13).json
+2024-08-29 12:14:22,138 - __main__ - INFO - Requisitando dados 0050087-33.2020.8.06.0028
+2024-08-29 12:14:22,140 - __main__ - INFO - 
+Resultado salvo em: output/processo_0050087-33.2020.8.06.0028_(29-08-2024_12:14:22).json

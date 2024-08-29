@@ -32,14 +32,14 @@ def fetch_data(nro_processo, nro_completo, url):
     data = {}
 
     try:
-        logger.info(f'=== Busca pelo processo {nro_completo} ===')
+        logger.info(f'\n=== Busca pelo processo {nro_completo} ===')
         logger.info("Acessando URL: %s", url)
         driver.get(url)
         
         search_box = wait.until(EC.presence_of_element_located((By.ID, "numeroDigitoAnoUnificado")))
         search_box.send_keys(nro_processo)
         search_box.send_keys(Keys.RETURN)
-        logger.info(f'Busca iniciada!')
+        logger.info(f'Busca iniciada no {grau}!')
 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
@@ -67,8 +67,16 @@ def fetch_data(nro_processo, nro_completo, url):
         return {"Dados Processuais": results}
 
     except (TimeoutException, WebDriverException) as e:
-        logger.error("Erro durante a busca: Verifique os dados e a url inseridos na busca.")
+        logger.error("Erro durante a busca: Verifique os dados e a url inseridos na busca.\n")
         return{'erro': 'Verifique os dados e a url inseridos na busca.'}
+    
+    except TimeoutError:
+        logger.error("Serviço indisponível\n")
+        # return Response(
+        #         json.dumps({'erro': 'Serviço indisponível'}),
+        #         mimetype='application/json; charset=utf-8'
+        #     ), 503
+        return {'erro': 'Serviço indisponível'}
 
     finally:
         driver.quit()

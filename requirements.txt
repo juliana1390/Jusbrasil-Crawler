@@ -6,3 +6,4 @@ requests==2.32.3
 webdriver_manager==4.0.2
 pytest==8.3.2
 pytest-cov==5.0.0
+pytest-mock
